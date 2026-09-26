@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "categories": [
+    { "id": "animals", "name": "Животные", "emoji": "🐾" },
+    { "id": "nature", "name": "Природа", "emoji": "🌿" },
+    { "id": "space", "name": "Космос", "emoji": "🚀" },
+    { "id": "food", "name": "Еда и напитки", "emoji": "🍕" },
+    { "id": "home", "name": "Дом и быт", "emoji": "🏠" },
+    { "id": "tools", "name": "Инструменты и техника", "emoji": "🔧" },
+    { "id": "clothes", "name": "Одежда и стиль", "emoji": "👕" },
+    { "id": "body", "name": "Тело и здоровье", "emoji": "💪" },
+    { "id": "people", "name": "Люди и профессии", "emoji": "👷" },
+    { "id": "family", "name": "Семья и отношения", "emoji": "👪" },
+    { "id": "feelings", "name": "Чувства и характер", "emoji": "💭" },
+    { "id": "transport", "name": "Транспорт", "emoji": "🚗" },
+    { "id": "places", "name": "Места и путешествия", "emoji": "🏙️" },
+    { "id": "sport", "name": "Спорт", "emoji": "⚽" },
+    { "id": "hobby", "name": "Хобби и игры", "emoji": "🎲" },
+    { "id": "holidays", "name": "Праздники", "emoji": "🎉" },
+    { "id": "science", "name": "Наука", "emoji": "🔬" },
+    { "id": "tech", "name": "Технологии", "emoji": "💻" },
+    { "id": "school", "name": "Учёба", "emoji": "🎓" },
+    { "id": "art", "name": "Искусство", "emoji": "🎨" },
+    { "id": "music", "name": "Музыка", "emoji": "🎵" },
+    { "id": "cinema", "name": "Кино и книги", "emoji": "🎬" },
+    { "id": "history", "name": "История", "emoji": "🏛️" },
+    { "id": "myth", "name": "Сказки и мифы", "emoji": "🐉" },
+    { "id": "society", "name": "Общество", "emoji": "⚖️" },
+    { "id": "economy", "name": "Деньги и работа", "emoji": "💰" },
+    { "id": "abstract", "name": "Абстрактное", "emoji": "✨" },
+    { "id": "phrases", "name": "Выражения", "emoji": "💬" }
+  ]
+}

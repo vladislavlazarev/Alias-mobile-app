@@ -1,0 +1,174 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/unbounded';
+@import '@fontsource-variable/manrope';
+
+@theme {
+  --font-sans: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Unbounded Variable', 'Manrope Variable', ui-sans-serif, sans-serif;
+
+  /* Фон и поверхности — графит с холодным зелёным подтоном */
+  --color-ink-950: #07090a;
+  --color-ink-900: #0c1011;
+  --color-ink-850: #111718;
+  --color-ink-800: #161e20;
+  --color-ink-750: #1c2629;
+  --color-ink-700: #243135;
+  --color-ink-600: #344349;
+  --color-ink-500: #52646b;
+  --color-ink-400: #7c9098;
+  --color-ink-300: #a8b8be;
+  --color-ink-200: #cbd6da;
+  --color-ink-100: #e7eef0;
+
+  /* Акценты */
+  --color-acid-200: #eafcb4;
+  --color-acid-300: #dcf98a;
+  --color-acid-400: #c6f24e;
+  --color-acid-500: #aad62f;
+  --color-acid-600: #7fa31a;
+
+  --color-aqua-300: #86ecf8;
+  --color-aqua-400: #36d6f0;
+  --color-aqua-500: #13b3cf;
+
+  --color-hot-300: #ff9dbb;
+  --color-hot-400: #ff6b9a;
+  --color-hot-500: #f23f78;
+
+  --color-sun-300: #ffe27a;
+  --color-sun-400: #ffd23f;
+
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  html {
+    background: var(--color-ink-950);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-ink-950);
+    color: var(--color-ink-100);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    overscroll-behavior: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  input,
+  textarea {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  button {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  button:disabled {
+    cursor: default;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-acid-400);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .pt-safe {
+    padding-top: max(env(safe-area-inset-top), 12px);
+  }
+  .pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom), 16px);
+  }
+  .px-safe {
+    padding-left: max(env(safe-area-inset-left), 20px);
+    padding-right: max(env(safe-area-inset-right), 20px);
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Фоновая «сетка» и свечение для главного экрана */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
+}
+
+.glow-acid {
+  box-shadow:
+    0 0 0 1px rgb(198 242 78 / 0.35),
+    0 10px 40px -8px rgb(198 242 78 / 0.45);
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 1.6s ease-out infinite;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-4px);
+  }
+  40%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
