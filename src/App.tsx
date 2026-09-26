@@ -32,7 +32,7 @@ export function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="relative h-full overflow-hidden bg-ink-950">
+      <div className="relative h-full overflow-hidden bg-ink-950 font-sans text-ink-100">
         <AnimatePresence mode="popLayout" initial={false} custom={direction}>
           <motion.div
             key={route}
