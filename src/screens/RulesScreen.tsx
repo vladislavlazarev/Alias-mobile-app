@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, Ban, Flag, MessageCircle, Timer, Trophy, Users } from 'lucide-react'
+import { ArrowDown, ArrowUp, Ban, Flag, Layers, MessageCircle, Timer, Trophy, Users } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Screen, TopBar } from '../components/Screen'
 import { useUi } from '../store/uiStore'
@@ -18,6 +18,10 @@ export function RulesScreen() {
           <Rule icon={<Users className="size-5" />} title="Разбейтесь на команды">
             Минимум две команды по 2+ человека. Можно вписать имена игроков — приложение будет подсказывать, кто
             объясняет.
+          </Rule>
+          <Rule icon={<Layers className="size-5" />} title="Выберите слова">
+            Любые уровни сложности, нужные темы и дополнительные наборы: литературные герои, исторические личности,
+            фильмы, страны и многое другое.
           </Rule>
           <Rule icon={<Timer className="size-5" />} title="Объясняйте на время">
             Объясняющий видит слово и описывает его своей команде, пока идёт таймер.
