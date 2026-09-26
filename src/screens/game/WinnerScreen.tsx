@@ -3,6 +3,7 @@ import { Crown, Home, RotateCcw, Trophy, Zap } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { Button } from '../../components/Button'
 import { Confetti } from '../../components/Confetti'
+import { FitText } from '../../components/FitWord'
 import { Screen } from '../../components/Screen'
 import { TeamDot, teamStyle } from '../../components/TeamBadge'
 import { gameStats, rankedTeams } from '../../game/engine'
@@ -43,9 +44,9 @@ export function WinnerScreen() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mt-2 font-display text-[2.4rem] font-black leading-[1.05] tracking-tight text-balance break-words text-(--team)"
+            className="mt-2 w-full"
           >
-            {winner.name}
+            <FitText text={winner.name} max={38} min={20} className="font-display font-black leading-[1.05] tracking-tight text-(--team)" />
           </motion.h1>
           <div className="mt-2 text-ink-300">
             {ranked[0].score} {plural(ranked[0].score, 'очко', 'очка', 'очков')} за {stats.turnsPlayed}{' '}

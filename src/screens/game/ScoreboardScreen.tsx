@@ -66,7 +66,7 @@ export function ScoreboardScreen() {
                     />
                   </div>
                   {justPlayed ? (
-                    <span className="min-w-9 text-right text-xs font-bold text-(--team) tabular">{signed(delta)}</span>
+                    <span className="min-w-9 text-right text-xs font-bold text-(--team) tabular">{delta === 0 ? '+0' : signed(delta)}</span>
                   ) : (
                     <span className="min-w-9" />
                   )}

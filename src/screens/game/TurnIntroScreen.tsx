@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { ArrowDown, ArrowUp, Home, Mic, Swords } from 'lucide-react'
 import { Button, IconButton } from '../../components/Button'
+import { FitText } from '../../components/FitWord'
 import { Screen } from '../../components/Screen'
 import { teamStyle } from '../../components/TeamBadge'
 import { computeScores, guessersFor, isTieBreak, roundNumber } from '../../game/engine'
@@ -57,9 +58,9 @@ export function TurnIntroScreen() {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', damping: 14, stiffness: 180 }}
-          className="mt-3 max-w-full font-display text-[2.6rem] font-black leading-[1.05] tracking-tight text-balance break-words text-(--team)"
+          className="mt-3 w-full"
         >
-          {team.name}
+          <FitText text={team.name} max={42} min={22} className="font-display font-black leading-[1.05] tracking-tight text-(--team)" />
         </motion.h1>
 
         {turn.explainer ? (
@@ -93,12 +94,12 @@ export function TurnIntroScreen() {
         </div>
 
         {!tutorialSeen ? (
-          <div className="mt-8 grid w-full max-w-sm grid-cols-2 gap-2 text-sm font-semibold">
-            <div className="flex items-center gap-2 rounded-2xl bg-acid-400/10 px-3 py-2.5 text-acid-300 ring-1 ring-inset ring-acid-400/25">
-              <ArrowUp className="size-4 shrink-0" /> Вверх — угадали
+          <div className="mt-8 flex w-full max-w-xs flex-col gap-2 text-sm font-semibold">
+            <div className="flex items-center justify-center gap-2 rounded-2xl bg-acid-400/10 px-3 py-2.5 text-acid-300 ring-1 ring-inset ring-acid-400/25">
+              <ArrowUp className="size-4 shrink-0" /> Свайп вверх — угадали
             </div>
-            <div className="flex items-center gap-2 rounded-2xl bg-hot-400/10 px-3 py-2.5 text-hot-300 ring-1 ring-inset ring-hot-400/25">
-              <ArrowDown className="size-4 shrink-0" /> Вниз — пропуск
+            <div className="flex items-center justify-center gap-2 rounded-2xl bg-hot-400/10 px-3 py-2.5 text-hot-300 ring-1 ring-inset ring-hot-400/25">
+              <ArrowDown className="size-4 shrink-0" /> Свайп вниз — пропуск
             </div>
           </div>
         ) : null}
