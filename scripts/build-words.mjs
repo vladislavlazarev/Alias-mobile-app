@@ -7,6 +7,10 @@
  *
  * Формат txt: одно слово на строку, секции [easy] / [medium] / [hard],
  * строки с # — комментарии.
+ *
+ * Группы категорий (поле group в meta.json):
+ *   base  — обычный словарь: строчная кириллица, до 3 слов;
+ *   extra — дополнительные наборы (имена, названия): как принято писать, с заглавными, до 5 слов.
  */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -16,8 +20,10 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const srcDir = join(root, 'words', 'ru')
 const outFile = join(root, 'src', 'data', 'words.ru.json')
 const LEVELS = ['easy', 'medium', 'hard']
-const WORD_RE = /^[а-яё]+(?:[ -][а-яё]+)*$/
-const MAX_WORDS_IN_PHRASE = 3
+const RULES = {
+  base: { re: /^[а-яё]+(?:[ -][а-яё]+)*$/, maxWords: 3, lower: true },
+  extra: { re: /^[А-ЯЁа-яё0-9]+(?:(?: |-|')[А-ЯЁа-яё0-9]+)*$/, maxWords: 5, lower: false },
+}
 
 const meta = JSON.parse(readFileSync(join(srcDir, 'meta.json'), 'utf8'))
 const errors = []
@@ -27,6 +33,11 @@ const words = Object.fromEntries(LEVELS.map((l) => [l, {}]))
 const normalize = (w) => w.replace(/ё/g, 'е')
 
 for (const cat of meta.categories) {
+  const rules = RULES[cat.group ?? 'base']
+  if (!rules) {
+    errors.push(`${cat.id}: неизвестная группа ${cat.group}`)
+    continue
+  }
   const file = join(srcDir, `${cat.id}.txt`)
   if (!existsSync(file)) {
     errors.push(`${cat.id}: нет файла ${cat.id}.txt`)
@@ -48,10 +59,11 @@ for (const cat of meta.categories) {
       errors.push(`${where}: слово «${line}» вне секции`)
       return
     }
-    const word = line.toLowerCase().replace(/\s+/g, ' ')
-    if (!WORD_RE.test(word)) errors.push(`${where}: недопустимые символы в «${line}»`)
-    if (word.split(' ').length > MAX_WORDS_IN_PHRASE) errors.push(`${where}: слишком длинная фраза «${line}»`)
-    const key = normalize(word)
+    const spaced = line.replace(/\s+/g, ' ')
+    const word = rules.lower ? spaced.toLowerCase() : spaced
+    if (!rules.re.test(word)) errors.push(`${where}: недопустимые символы в «${line}»`)
+    if (word.split(' ').length > rules.maxWords) errors.push(`${where}: слишком длинная фраза «${line}»`)
+    const key = normalize(word.toLowerCase())
     if (seen.has(key)) {
       errors.push(`${where}: дубль «${word}» (уже есть в ${seen.get(key)})`)
       return
@@ -75,7 +87,9 @@ for (const level of LEVELS) {
 const pack = {
   version: meta.version,
   lang: 'ru',
-  categories: meta.categories.map(({ id, name, emoji }) => ({ id, name, emoji })),
+  categories: meta.categories.map(({ id, name, emoji, group = 'base', description }) =>
+    description ? { id, name, emoji, group, description } : { id, name, emoji, group },
+  ),
   words,
 }
 const json = JSON.stringify(pack) + '\n'
