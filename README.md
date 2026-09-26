@@ -17,6 +17,14 @@
 - Звуки синтезируются на лету, есть вибрация, экран не гаснет во время партии
 - Тёмная тема, веб-фронт на React, мобильные сборки через Capacitor
 
+## Веб-версия
+
+Веб-версия публикуется на GitHub Pages workflow-ом `.github/workflows/pages.yml` при каждом пуше в основную ветку:
+https://vladislavlazarev.github.io/Alias-mobile-app/
+
+Чтобы публикация заработала, в настройках репозитория включите Settings → Pages → Source: **GitHub Actions**
+(для приватного репозитория Pages доступны только на платном тарифе GitHub).
+
 ## Стек
 
 React 19 · TypeScript · Vite · Tailwind CSS 4 · Zustand · Motion · Capacitor 8 · Vitest
