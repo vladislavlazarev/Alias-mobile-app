@@ -2,9 +2,9 @@ import { History, Smartphone, Volume2 } from 'lucide-react'
 import { Button } from '../components/Button'
 import { Card, Screen, SectionLabel, TopBar } from '../components/Screen'
 import { Toggle } from '../components/Toggle'
-import { LEVELS, PACK_VERSION, POOLS, TOTAL_WORDS } from '../data/wordpack'
+import { ALL_WORDS, BASE_TOTAL, EXTRA_TOTAL, LEVEL_POOLS, PACK_VERSION, TOTAL_WORDS } from '../data/wordpack'
 import { unseenCount } from '../game/deck'
-import { DIFFICULTIES } from '../game/presets'
+import { LEVEL_META } from '../game/presets'
 import { formatNumber } from '../lib/format'
 import { usePrefs } from '../store/prefsStore'
 import { getSeen, resetSeen, useSeenVersion } from '../store/seenWords'
@@ -15,7 +15,7 @@ export function SettingsScreen() {
   const go = useUi((s) => s.go)
   const { sound, vibration, setSound, setVibration } = usePrefs()
   const seen = getSeen()
-  const totalSeen = TOTAL_WORDS - unseenCount(POOLS.mixed, seen)
+  const totalSeen = TOTAL_WORDS - unseenCount(ALL_WORDS, seen)
 
   return (
     <Screen>
@@ -46,12 +46,11 @@ export function SettingsScreen() {
               Мы запоминаем, какие слова вам уже выпадали, и не показываем их снова, пока не закончится весь уровень.
             </p>
             <div className="mt-4 flex flex-col gap-3">
-              {LEVELS.map((level) => {
-                const pool = POOLS[level]
+              {LEVEL_META.map((meta) => {
+                const pool = LEVEL_POOLS[meta.id]
                 const used = pool.length - unseenCount(pool, seen)
-                const meta = DIFFICULTIES.find((d) => d.id === level)!
                 return (
-                  <div key={level}>
+                  <div key={meta.id}>
                     <div className="flex justify-between text-sm">
                       <span className="font-semibold">{meta.title}</span>
                       <span className="tabular text-ink-400">
@@ -98,7 +97,8 @@ export function SettingsScreen() {
           <Card className="divide-y divide-ink-750 text-sm">
             <Row label="Версия приложения" value={__APP_VERSION__} />
             <Row label="Версия словаря" value={`v${PACK_VERSION}`} />
-            <Row label="Слов в словаре" value={formatNumber(TOTAL_WORDS)} />
+            <Row label="Обычные слова" value={formatNumber(BASE_TOTAL)} />
+            {EXTRA_TOTAL > 0 ? <Row label="Дополнительные наборы" value={formatNumber(EXTRA_TOTAL)} /> : null}
             <Row label="Интернет" value="не нужен" />
           </Card>
         </div>

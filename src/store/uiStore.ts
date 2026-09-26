@@ -1,10 +1,11 @@
 import { create } from 'zustand'
-import { DEFAULT_SETTINGS } from '../game/presets'
+import { BASE_CATEGORIES } from '../data/wordpack'
+import { DEFAULT_SETTINGS, sortLevels } from '../game/presets'
 import { MAX_TEAMS, MIN_TEAMS, makeTeam } from '../game/teams'
-import type { GameSettings, Team } from '../game/types'
+import type { GameSettings, Level, Team } from '../game/types'
 import { usePrefs } from './prefsStore'
 
-export type Route = 'home' | 'setup-teams' | 'setup-rules' | 'rules' | 'settings' | 'game'
+export type Route = 'home' | 'setup-teams' | 'setup-words' | 'setup-rules' | 'rules' | 'settings' | 'game'
 
 export interface ConfirmRequest {
   title: string
@@ -30,6 +31,11 @@ interface UiState {
   addTeam(): void
   removeTeam(id: string): void
   setSettings(patch: Partial<GameSettings>): void
+  /** false — нельзя снять последний уровень. */
+  toggleLevel(level: Level): boolean
+  toggleCategory(id: string): void
+  setAllCategories(on: boolean): void
+  togglePack(id: string): void
   askConfirm(req: ConfirmRequest): void
   closeConfirm(): void
   showToast(text: string): void
@@ -75,6 +81,35 @@ export const useUi = create<UiState>()((set, get) => ({
 
   setSettings(patch) {
     set({ setupSettings: { ...get().setupSettings, ...patch } })
+  },
+
+  toggleLevel(level) {
+    const { levels } = get().setupSettings
+    if (levels.includes(level)) {
+      if (levels.length === 1) return false
+      get().setSettings({ levels: levels.filter((l) => l !== level) })
+    } else {
+      get().setSettings({ levels: sortLevels([...levels, level]) })
+    }
+    return true
+  },
+
+  toggleCategory(id) {
+    const { excludedCategories } = get().setupSettings
+    get().setSettings({
+      excludedCategories: excludedCategories.includes(id)
+        ? excludedCategories.filter((c) => c !== id)
+        : [...excludedCategories, id],
+    })
+  },
+
+  setAllCategories(on) {
+    get().setSettings({ excludedCategories: on ? [] : BASE_CATEGORIES.map((c) => c.id) })
+  },
+
+  togglePack(id) {
+    const { packs } = get().setupSettings
+    get().setSettings({ packs: packs.includes(id) ? packs.filter((p) => p !== id) : [...packs, id] })
   },
 
   askConfirm(req) {

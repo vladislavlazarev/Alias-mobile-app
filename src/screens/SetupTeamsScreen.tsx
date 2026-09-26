@@ -24,12 +24,12 @@ export function SetupTeamsScreen() {
         ui.updateTeam(t.id, { name: t.name.trim() })
       }
     })
-    go('setup-rules')
+    go('setup-words')
   }
 
   return (
     <Screen>
-      <TopBar title="Команды" subtitle="Шаг 1 из 2" onBack={() => go('home', -1)} />
+      <TopBar title="Команды" subtitle="Шаг 1 из 3" onBack={() => go('home', -1)} />
 
       <div className="-mx-1 flex-1 overflow-y-auto px-1 pt-2 pb-4 no-scrollbar">
         <SectionLabel aside={`${teams.length} из ${MAX_TEAMS}`}>Кто играет</SectionLabel>

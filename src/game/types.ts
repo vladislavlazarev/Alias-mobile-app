@@ -1,5 +1,4 @@
 export type Level = 'easy' | 'medium' | 'hard'
-export type Difficulty = Level | 'mixed'
 
 export type TeamColor = 'lime' | 'cyan' | 'pink' | 'yellow' | 'green' | 'blue'
 
@@ -12,7 +11,12 @@ export interface Team {
 }
 
 export interface GameSettings {
-  difficulty: Difficulty
+  /** Какие уровни сложности участвуют (хотя бы один). */
+  levels: Level[]
+  /** Отключённые темы обычного словаря. Храним исключения, чтобы новые темы из обновлений включались сами. */
+  excludedCategories: string[]
+  /** Включённые дополнительные наборы (имена, названия). */
+  packs: string[]
   roundSeconds: number
   targetScore: number
   /** −1 очко за каждое пропущенное слово. */

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { DEFAULT_SETTINGS } from '../game/presets'
+import { DEFAULT_SETTINGS, normalizeSettings } from '../game/presets'
 import { defaultTeams } from '../game/teams'
 import type { GameSettings, Team } from '../game/types'
 import { storage } from './storage'
@@ -40,7 +40,7 @@ export const usePrefs = create<PrefsState>()(
         return {
           ...current,
           ...p,
-          lastSettings: { ...DEFAULT_SETTINGS, ...p.lastSettings },
+          lastSettings: normalizeSettings(p.lastSettings),
           lastTeams: p.lastTeams && p.lastTeams.length >= 2 ? p.lastTeams : current.lastTeams,
         }
       },

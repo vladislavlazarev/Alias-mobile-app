@@ -1,15 +1,15 @@
 import { motion } from 'motion/react'
-import { BookOpen, Drama, Layers, Play, Settings2, Sparkles, Tags, Users } from 'lucide-react'
+import { BookOpen, Drama, Layers, MessageSquareQuote, Play, Settings2, Sparkles, Users } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Button, IconButton } from '../components/Button'
 import { Wordmark } from '../components/Logo'
 import { Card, Screen, SectionLabel } from '../components/Screen'
 import { TeamDot } from '../components/TeamBadge'
-import { POOLS, TOTAL_WORDS } from '../data/wordpack'
+import { ALL_WORDS, BASE_CATEGORIES, EXTRA_PACKS, TOTAL_WORDS } from '../data/wordpack'
 import { unseenCount } from '../game/deck'
 import { rankedTeams, roundNumber } from '../game/engine'
-import { difficultyTitle } from '../game/presets'
-import { formatNumber, plural } from '../lib/format'
+import { levelsLabel } from '../game/presets'
+import { formatNumber, plural, pluralCount } from '../lib/format'
 import { sfx } from '../lib/sound'
 import { useGame } from '../store/gameStore'
 import { getSeen, useSeenVersion } from '../store/seenWords'
@@ -20,7 +20,7 @@ export function HomeScreen() {
   useSeenVersion()
   const game = useGame((s) => s.game)
   const go = useUi((s) => s.go)
-  const fresh = unseenCount(POOLS.mixed, getSeen())
+  const fresh = unseenCount(ALL_WORDS, getSeen())
   const seenShare = TOTAL_WORDS ? 1 - fresh / TOTAL_WORDS : 0
   const activeGame = game && !game.winnerId ? game : null
 
@@ -52,7 +52,10 @@ export function HomeScreen() {
           <div className="flex items-end justify-between gap-4">
             <div>
               <div className="font-display text-4xl font-black tabular tracking-tight">{formatNumber(TOTAL_WORDS)}</div>
-              <div className="mt-1 text-sm text-ink-400">{plural(TOTAL_WORDS, 'слово', 'слова', 'слов')} в колоде · 3 уровня</div>
+              <div className="mt-1 text-sm text-ink-400">
+                {plural(TOTAL_WORDS, 'слово', 'слова', 'слов')} · {BASE_CATEGORIES.length} тем
+                {EXTRA_PACKS.length > 0 ? ` · ${pluralCount(EXTRA_PACKS.length, 'набор', 'набора', 'наборов')}` : ''}
+              </div>
             </div>
             <div className="text-right">
               <div className="font-display text-xl font-bold tabular text-acid-400">{formatNumber(fresh)}</div>
@@ -83,14 +86,14 @@ export function HomeScreen() {
             active
             icon={<Users className="size-5" />}
             title="Классика"
-            text="Команды объясняют слова на время"
+            text="Команды, таймер, темы и наборы на выбор"
             onClick={() => {
               sfx.unlock()
               startNewGameFlow()
             }}
           />
           <ModeCard icon={<Drama className="size-5" />} title="Крокодил" text="Показывай жестами, без слов" />
-          <ModeCard icon={<Tags className="size-5" />} title="Темы" text="Играйте только любимыми категориями" />
+          <ModeCard icon={<MessageSquareQuote className="size-5" />} title="Одно слово" text="Объясни, сказав всего одно слово" />
           <ModeCard icon={<Layers className="size-5" />} title="Шляпа" text="Свои слова от каждого игрока" />
         </div>
       </div>
@@ -135,7 +138,7 @@ function ContinueCard() {
         <div>
           <div className="text-xs font-bold uppercase tracking-[0.14em] text-acid-400">Партия идёт</div>
           <div className="mt-1 font-display text-lg font-bold">
-            Раунд {roundNumber(game)} · {difficultyTitle(game.settings.difficulty)}
+            Раунд {roundNumber(game)} · {levelsLabel(game.settings.levels)}
           </div>
         </div>
         <span className="flex size-12 items-center justify-center rounded-2xl bg-acid-400 text-ink-950">

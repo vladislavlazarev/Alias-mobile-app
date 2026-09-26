@@ -1,13 +1,13 @@
-import { Flag, MinusCircle, Play, Timer, Trophy } from 'lucide-react'
+import { ChevronRight, Flag, MinusCircle, Play, Timer, Trophy } from 'lucide-react'
 import { Button } from '../components/Button'
 import { ChipGroup } from '../components/ChipGroup'
 import { Card, Screen, SectionLabel, TopBar } from '../components/Screen'
 import { Toggle } from '../components/Toggle'
-import { POOLS } from '../data/wordpack'
-import { DIFFICULTIES, ROUND_TIMES, TARGET_SCORES, type DifficultyMeta } from '../game/presets'
+import { wordsSummary } from '../data/summary'
+import { poolFor } from '../data/wordpack'
+import { ROUND_TIMES, TARGET_SCORES } from '../game/presets'
 import { haptic } from '../lib/haptics'
-import { cx } from '../lib/cx'
-import { formatNumber, plural } from '../lib/format'
+import { pluralCount } from '../lib/format'
 import { sfx } from '../lib/sound'
 import { useGame } from '../store/gameStore'
 import { usePrefs } from '../store/prefsStore'
@@ -29,23 +29,23 @@ export function SetupRulesScreen() {
 
   return (
     <Screen>
-      <TopBar title="Правила" subtitle="Шаг 2 из 2" onBack={() => go('setup-teams', -1)} />
+      <TopBar title="Правила" subtitle="Шаг 3 из 3" onBack={() => go('setup-words', -1)} />
 
       <div className="-mx-1 flex-1 overflow-y-auto px-1 pt-2 pb-4 no-scrollbar">
-        <SectionLabel>Сложность слов</SectionLabel>
-        <div className="grid grid-cols-2 gap-2.5">
-          {DIFFICULTIES.map((d) => (
-            <DifficultyCard
-              key={d.id}
-              meta={d}
-              active={settings.difficulty === d.id}
-              onClick={() => {
-                haptic.light()
-                setSettings({ difficulty: d.id })
-              }}
-            />
-          ))}
-        </div>
+        <SectionLabel>Слова</SectionLabel>
+        <button
+          type="button"
+          onClick={() => go('setup-words', -1)}
+          className="flex w-full items-center gap-3 rounded-3xl bg-ink-850 p-4 text-left ring-1 ring-inset ring-ink-750 transition active:scale-[0.99]"
+        >
+          <span className="min-w-0 flex-1">
+            <span className="block font-display font-bold">{wordsSummary(settings)}</span>
+            <span className="mt-0.5 block text-sm text-ink-400">
+              {pluralCount(poolFor(settings).length, 'слово', 'слова', 'слов')} в колоде
+            </span>
+          </span>
+          <ChevronRight className="size-5 text-ink-500" />
+        </button>
 
         <div className="mt-7">
           <SectionLabel aside={<Timer className="size-3.5" />}>Время раунда</SectionLabel>
@@ -97,51 +97,3 @@ export function SetupRulesScreen() {
   )
 }
 
-function DifficultyCard({ meta, active, onClick }: { meta: DifficultyMeta; active: boolean; onClick: () => void }) {
-  const count = POOLS[meta.id].length
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cx(
-        'flex flex-col items-start rounded-3xl p-4 text-left transition-all duration-150 active:scale-[0.98]',
-        active ? 'bg-acid-400 text-ink-950 shadow-[0_12px_32px_-12px_rgb(198_242_78/0.7)]' : 'bg-ink-850 ring-1 ring-inset ring-ink-750',
-      )}
-    >
-      <div className="flex w-full items-center justify-between gap-2">
-        <span className="font-display text-[17px] font-bold tracking-tight">{meta.title}</span>
-        <Dots n={meta.dots} active={active} />
-      </div>
-      <span className={cx('mt-1 text-xs leading-snug', active ? 'text-ink-900/75' : 'text-ink-400')}>{meta.hint}</span>
-      <span className={cx('mt-3 text-sm font-semibold italic leading-snug', active ? 'text-ink-950' : 'text-ink-200')}>
-        {meta.examples.join(', ')}…
-      </span>
-      <span className={cx('mt-2 text-xs font-bold tabular', active ? 'text-ink-900/70' : 'text-ink-500')}>
-        {formatNumber(count)} {plural(count, 'слово', 'слова', 'слов')}
-      </span>
-    </button>
-  )
-}
-
-function Dots({ n, active }: { n: number; active: boolean }) {
-  if (n === 0) {
-    return (
-      <span className="flex gap-1">
-        {[0, 1, 2].map((i) => (
-          <span key={i} className={cx('size-1.5 rounded-full', active ? 'bg-ink-950' : ['bg-acid-400', 'bg-aqua-400', 'bg-hot-400'][i])} />
-        ))}
-      </span>
-    )
-  }
-  return (
-    <span className="flex gap-1">
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          className={cx('size-1.5 rounded-full', i < n ? (active ? 'bg-ink-950' : 'bg-acid-400') : active ? 'bg-ink-950/25' : 'bg-ink-700')}
-        />
-      ))}
-    </span>
-  )
-}

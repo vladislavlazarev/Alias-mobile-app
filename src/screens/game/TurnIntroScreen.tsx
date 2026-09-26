@@ -5,7 +5,7 @@ import { FitText } from '../../components/FitWord'
 import { Screen } from '../../components/Screen'
 import { teamStyle } from '../../components/TeamBadge'
 import { computeScores, guessersFor, isTieBreak, roundNumber } from '../../game/engine'
-import { difficultyTitle } from '../../game/presets'
+import { levelsLabel } from '../../game/presets'
 import { plural } from '../../lib/format'
 import { useLatest } from '../../lib/useLatest'
 import { haptic } from '../../lib/haptics'
@@ -40,7 +40,7 @@ export function TurnIntroScreen() {
         <div className="text-center">
           <div className="font-display text-sm font-bold">Раунд {roundNumber(game)}</div>
           <div className="text-xs text-ink-400">
-            {difficultyTitle(game.settings.difficulty)} · {game.settings.roundSeconds} сек
+            {levelsLabel(game.settings.levels)} · {game.settings.roundSeconds} сек
           </div>
         </div>
         <div className="size-11" />

@@ -1,8 +1,9 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { POOLS } from '../data/wordpack'
+import { poolFor } from '../data/wordpack'
 import { pickWord } from '../game/deck'
 import { commitTurn, createGame, currentTeam, explainerFor } from '../game/engine'
+import { normalizeSettings } from '../game/presets'
 import type { Game, GameSettings, Team, TurnDraft, WordStatus } from '../game/types'
 import { getSeen, markSeen, seenChanged } from './seenWords'
 import { storage } from './storage'
@@ -55,7 +56,7 @@ export const useGame = create<GameStore>()(
         const { game, turn } = get()
         if (!game) throw new Error('no game')
         const seen = getSeen()
-        const { word, reshuffled } = pickWord(POOLS[game.settings.difficulty], seen, usedWords(game, turn))
+        const { word, reshuffled } = pickWord(poolFor(game.settings), seen, usedWords(game, turn))
         if (reshuffled) {
           seenChanged()
           set((s) => ({ reshuffles: s.reshuffles + 1 }))
@@ -222,7 +223,8 @@ export const useGame = create<GameStore>()(
         } else if (turn?.phase === 'countdown') {
           turn = { ...turn, phase: 'ready' }
         }
-        return { ...current, game: p.game ?? null, turn }
+        const game = p.game ? { ...p.game, settings: normalizeSettings(p.game.settings) } : null
+        return { ...current, game, turn }
       },
     },
   ),

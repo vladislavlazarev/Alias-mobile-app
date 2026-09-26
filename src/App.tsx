@@ -9,6 +9,7 @@ import { RulesScreen } from './screens/RulesScreen'
 import { SettingsScreen } from './screens/SettingsScreen'
 import { SetupRulesScreen } from './screens/SetupRulesScreen'
 import { SetupTeamsScreen } from './screens/SetupTeamsScreen'
+import { SetupWordsScreen } from './screens/SetupWordsScreen'
 import { handleBack } from './screens/navigation'
 import { useGame } from './store/gameStore'
 import { useUi } from './store/uiStore'
@@ -49,6 +50,7 @@ export function App() {
           >
             {route === 'home' && <HomeScreen />}
             {route === 'setup-teams' && <SetupTeamsScreen />}
+            {route === 'setup-words' && <SetupWordsScreen />}
             {route === 'setup-rules' && <SetupRulesScreen />}
             {route === 'rules' && <RulesScreen />}
             {route === 'settings' && <SettingsScreen />}

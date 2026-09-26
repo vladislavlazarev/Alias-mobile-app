@@ -54,6 +54,9 @@ export function handleBack(): boolean {
     case 'home':
       return false
     case 'setup-rules':
+      ui.go('setup-words', -1)
+      return true
+    case 'setup-words':
       ui.go('setup-teams', -1)
       return true
     case 'setup-teams':
