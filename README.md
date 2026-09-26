@@ -40,32 +40,18 @@ npm run dev        # http://localhost:5173 — удобнее всего в мо
 
 ## Мобильные приложения (Capacitor)
 
-Нативные проекты не лежат в репозитории, их генерирует Capacitor. Один раз:
+Нативные проекты `ios/` и `android/` лежат в репозитории и уже настроены: иконки, сплэш, тёмные системные панели,
+портретная ориентация, privacy manifest для App Store. После изменений веб-части:
 
 ```bash
-npm run build
-npx cap add ios        # нужен macOS + Xcode
-npx cap add android    # нужен Android Studio
-```
-
-Иконка и сплэш генерируются из `resources/icon.png` (1024×1024) и `resources/splash.png` (2732×2732):
-
-```bash
-npx @capacitor/assets generate --iconBackgroundColor '#07090a' --splashBackgroundColor '#07090a'
-```
-
-Дальше после каждого изменения веб-части:
-
-```bash
+npm run cap:sync       # сборка + копирование в оба проекта
 npm run cap:ios        # сборка + sync + открыть Xcode
 npm run cap:android    # сборка + sync + открыть Android Studio
+npm run cap:assets     # перегенерировать иконки и сплэш из resources/
 ```
 
-Перед публикацией поменяйте `appId` и `appName` в `capacitor.config.ts`.
-
-Используемые плагины: `@capacitor/haptics` (вибрация), `@capacitor/preferences` (надёжное хранилище вместо
-localStorage в WebView), `@capacitor/status-bar`, `@capacitor/splash-screen`, `@capacitor/app` (кнопка «Назад»
-на Android, пауза при сворачивании), `@capacitor-community/keep-awake` (экран не гаснет).
+Тестовый APK: `cd android && ./gradlew assembleDebug`. Подпись релиза, загрузка в Google Play и App Store,
+тексты карточек и скриншоты — в [docs/RELEASE.md](docs/RELEASE.md) и [store/](store/).
 
 ## Словарь
 
@@ -126,6 +112,9 @@ src/
 words/ru/      исходники словаря
 scripts/       сборка словаря
 resources/     исходники иконки и сплэша для нативных сборок
+ios/, android/ нативные проекты Capacitor
+store/         тексты карточек, скриншоты, иконка и баннер для магазинов
+docs/          инструкция по релизу и политика конфиденциальности
 ```
 
 Логика партии разделена на две части: чистые функции в `src/game/engine.ts`, покрытые тестами, и стор

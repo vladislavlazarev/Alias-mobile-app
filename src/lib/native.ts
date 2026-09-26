@@ -9,10 +9,8 @@ export const isNative = Capacitor.isNativePlatform()
 export async function initNativeChrome(): Promise<void> {
   if (!isNative) return
   try {
+    // Светлые иконки статус-бара на тёмном фоне (на Android отступы под панели даёт SystemBars).
     await StatusBar.setStyle({ style: Style.Dark })
-    if (Capacitor.getPlatform() === 'android') {
-      await StatusBar.setOverlaysWebView({ overlay: true })
-    }
   } catch {
     // плагин недоступен — не критично
   }

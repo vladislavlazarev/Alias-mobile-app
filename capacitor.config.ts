@@ -1,6 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
+  // Перед публикацией замените на свой идентификатор (его нельзя сменить после первого релиза).
   appId: 'com.vlazarev.alias',
   appName: 'Alias',
   webDir: 'dist',
@@ -19,10 +20,11 @@ const config: CapacitorConfig = {
       backgroundColor: '#07090a',
       showSpinner: false,
     },
-    StatusBar: {
+    SystemBars: {
+      // Приложение рисуется под системными панелями, отступы берутся из env(safe-area-inset-*).
+      insetsHandling: 'css',
+      initialViewportFitValueHint: 'cover',
       style: 'DARK',
-      backgroundColor: '#07090a',
-      overlaysWebView: true,
     },
   },
 }
